@@ -1,0 +1,11 @@
+<resources>
+
+    <string name="app_name">Smarch</string>
+    <string name="title_section3">Daum</string>
+    <string name="title_section2">Naver</string>
+    <string name="title_section1">Google</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">Smarch (Smart Search)</string>
+
+</resources>
