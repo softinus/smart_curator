@@ -1,8 +1,8 @@
 package com.raimsoft.smartcurator5;
 
-import com.kth.baasio.Baas;
-
 import android.app.Application;
+
+import com.kth.baasio.Baas;
 
 public class MainApplication extends Application {
 

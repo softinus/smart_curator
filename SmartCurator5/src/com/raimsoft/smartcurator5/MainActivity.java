@@ -28,8 +28,14 @@ public class MainActivity extends Activity
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         Intent intent = new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        
+        Tag tag = getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
+		if (tag != null) 
+		{
+			byte[] tagId = tag.getId();
+			tagDesc.setText("TagID: " + toHexString(tagId));
+		}		
     }
-
 
 
 	@Override
