@@ -1,5 +1,9 @@
 package com.raimsoft.smartcurator5;
 
+import com.parse.Parse;
+import com.parse.ParseAnalytics;
+import com.parse.ParseObject;
+
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -15,7 +19,7 @@ public class MainActivity extends Activity
 	private NfcAdapter nfcAdapter;
 	private PendingIntent pendingIntent;
 	
-	private TextView tagDesc;
+	private TextView TXT_tagDesc;
 	
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -23,7 +27,12 @@ public class MainActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        tagDesc = (TextView)findViewById(R.id.txt_tag);
+        TXT_tagDesc = (TextView)findViewById(R.id.txt_tag);
+        
+		Parse.initialize(this, "vh60sQDbtfnIlFxn5HrK6oBj5SN1rqYeqtixIngY", "23gt0kLNMnZJEPYYYxWXQFVZiRXMceKrU1Ge3kVz"); 
+		ParseAnalytics.trackAppOpened(getIntent());
+		
+		
         
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         Intent intent = new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -33,8 +42,14 @@ public class MainActivity extends Activity
 		if (tag != null) 
 		{
 			byte[] tagId = tag.getId();
-			tagDesc.setText("TagID: " + toHexString(tagId));
-		}		
+			TXT_tagDesc.setText("TagID: " + toHexString(tagId));
+		
+			ParseObject testObject = new ParseObject("NFC_List");
+			testObject.put("NFC_id", toHexString(tagId));
+			testObject.put("linked_user", "june");
+			testObject.saveInBackground();	
+
+		}
     }
 
 
@@ -47,7 +62,7 @@ public class MainActivity extends Activity
 		if (tag != null) 
 		{
 			byte[] tagId = tag.getId();
-			tagDesc.setText("TagID: " + toHexString(tagId));
+			TXT_tagDesc.setText("TagID: " + toHexString(tagId));
 		}
 	}
 	
