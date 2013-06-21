@@ -23,7 +23,7 @@ namespace NFCProject {
   /// </summary>
   public partial class MainWindow : Window
   {
-      List<ParseObject> m_ListObject;
+      List<ParseObject> m_RecentList, m_RegList;
       BitmapImage m_bitmap1, m_bitmap2;
 
     public MainWindow()
@@ -40,11 +40,14 @@ namespace NFCProject {
     {
         ParseAnalytics.TrackAppOpenedAsync();
 
-        m_ListObject = new List<ParseObject>();
+        m_RecentList = new List<ParseObject>();
+        m_RegList = new List<ParseObject>();
 
         //var testObject = new ParseObject("Windows");
         //testObject["WPF"] = "okay";
         //await testObject.SaveAsync();
+
+
 
         await RefreshList();
         
@@ -53,35 +56,43 @@ namespace NFCProject {
 
     private async Task RefreshList()
     {
-        int nCount1= lst_Recent.Items.Count;
+        ClearLists();
+        lst_Recent.Items.Add("Loading...");
+        lst_Regist.Items.Add("Loading...");
+
+        var query = ParseObject.GetQuery("NFC_List").WhereEqualTo("linked_user", "june");
+        IEnumerable<ParseObject> results = await query.FindAsync();
+
+        var query2 = ParseObject.GetQuery("NFC_reg").WhereEqualTo("linked_user", "june");
+        IEnumerable<ParseObject> results2 = await query2.FindAsync();
+
+        ClearLists();
+
+        IEnumerator e1 = results.GetEnumerator();
+        while (e1.MoveNext())
+        {
+            ParseObject obj = (ParseObject)(e1.Current);
+            m_RecentList.Add(obj);
+            lst_Recent.Items.Add(obj.Get<string>("NFC_id"));
+        }
+        IEnumerator e2 = results2.GetEnumerator();
+        while (e2.MoveNext())
+        {
+            ParseObject obj = (ParseObject)(e2.Current);
+            m_RegList.Add(obj);
+            lst_Regist.Items.Add(obj.Get<string>("NFC_id"));
+        }
+    }
+
+    private void ClearLists()
+    {
+        int nCount1 = lst_Recent.Items.Count;
         for (int i = 0; i < nCount1; ++i)
             lst_Recent.Items.RemoveAt(0);
 
         int nCount2 = lst_Regist.Items.Count;
         for (int i = 0; i < nCount2; ++i)
             lst_Regist.Items.RemoveAt(0);
-
-        var query = ParseObject.GetQuery("NFC_List").WhereEqualTo("linked_user", "june");
-        IEnumerable<ParseObject> results = await query.FindAsync();
-
-        IEnumerator e1 = results.GetEnumerator();
-        while (e1.MoveNext())
-        {
-            ParseObject obj = (ParseObject)(e1.Current);
-            m_ListObject.Add(obj);
-            lst_Recent.Items.Add(obj.Get<string>("NFC_id"));
-        }
-
-        var query2 = ParseObject.GetQuery("NFC_reg").WhereEqualTo("linked_user", "june");
-        IEnumerable<ParseObject> results2 = await query2.FindAsync();
-
-        IEnumerator e2 = results2.GetEnumerator();
-        while (e2.MoveNext())
-        {
-            ParseObject obj = (ParseObject)(e2.Current);
-            //m_ListObject.Add(obj);
-            lst_Regist.Items.Add(obj.Get<string>("NFC_id"));
-        }
     }
 
     private async void btn_refresh_Click(object sender, RoutedEventArgs e)
@@ -92,12 +103,22 @@ namespace NFCProject {
       // 선택이 바뀌면
     private void lst_Recent_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        ParseObject obj = m_ListObject[lst_Recent.SelectedIndex];
+        ParseObject obj = m_RecentList[lst_Recent.SelectedIndex];
         
         DateTime? timeCreated = obj.CreatedAt;
-        txt_date.Text= timeCreated.ToString();
+        txt_date.Text = timeCreated.Value.ToLocalTime().ToString();
 
         txt_id.Text= obj.Get<string>("NFC_id");
+
+    }
+
+       /// <summary>
+       /// 등록된거 선택
+       /// </summary>
+       /// <param name="sender"></param>
+       /// <param name="e"></param>
+    private void lst_Regist_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
 
     }
 
@@ -113,6 +134,15 @@ namespace NFCProject {
         {
             MessageBoxResult result = MessageBox.Show("Please select images.");
             return;
+        }
+
+        foreach(ParseObject PO in m_RegList)
+        {
+            if(txt_id.Text.Equals( PO.Get<string>("NFC_id") ))
+            {
+                MessageBoxResult result = MessageBox.Show("Current NFC id is already exist.");
+                return;
+            }
         }
 
         byte[] data1 = this.ConvertImageToByte(m_bitmap1);
@@ -133,6 +163,9 @@ namespace NFCProject {
 
         MessageBox.Show("Regist finish!");
     }
+
+
+
 
     private void btn_remove_Click_1(object sender, RoutedEventArgs e)
     {
