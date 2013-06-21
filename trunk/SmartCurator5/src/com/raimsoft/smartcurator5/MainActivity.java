@@ -49,11 +49,11 @@ public class MainActivity extends Activity
 		testObject.put("linked_user", "june");
 		testObject.saveInBackground();
 		
-		GetImage(IMG_1, strNFC_id, "File1");
-		GetImage(IMG_2, strNFC_id, "File2");
+		GetImage(IMG_1, TXT_1, strNFC_id, "File1");
+		GetImage(IMG_2, TXT_2, strNFC_id, "File2");
 	}
 
-	private void GetImage(final ImageView view, final String strNFC_id, final String strFileColumnName)
+	private void GetImage(final ImageView view_img, final TextView view_txt, final String strNFC_id, final String strFileColumnName)
 	{
 		ParseQuery<ParseObject> query= ParseQuery.getQuery("NFC_reg");
 		query.whereEqualTo("NFC_id", strNFC_id);
@@ -74,7 +74,7 @@ public class MainActivity extends Activity
 							opts.inDither= false;
 							opts.inSampleSize= 2;
 							Bitmap bitmap= BitmapFactory.decodeByteArray(file, 0, file.length, opts);
-							view.setImageBitmap(bitmap);
+							view_img.setImageBitmap(bitmap);
 						}
 					},
 					new ProgressCallback()
@@ -83,9 +83,9 @@ public class MainActivity extends Activity
 						public void done(Integer nProgress)
 						{
 							if(nProgress==100)
-								TXT_1.setText("");
+								view_txt.setText("");
 							else
-								TXT_1.setText(Integer.toString(nProgress)+"%");
+								view_txt.setText(Integer.toString(nProgress)+"%");
 						}
 					});
 				}
