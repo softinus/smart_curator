@@ -86,13 +86,27 @@ namespace NFCProject {
 
     private void ClearLists()
     {
-        int nCount1 = lst_Recent.Items.Count;
-        for (int i = 0; i < nCount1; ++i)
-            lst_Recent.Items.RemoveAt(0);
+        try
+        {
+            m_RecentList.Clear();
+            m_RegList.Clear();
 
-        int nCount2 = lst_Regist.Items.Count;
-        for (int i = 0; i < nCount2; ++i)
-            lst_Regist.Items.RemoveAt(0);
+            lst_Recent.Items.Clear();
+            lst_Regist.Items.Clear();
+
+
+            //int nCount1 = lst_Recent.Items.Count;
+            //for (int i = 0; i < nCount1; ++i)
+            //    lst_Recent.Items.RemoveAt(0);
+
+            //int nCount2 = lst_Regist.Items.Count;
+            //for (int i = 0; i < nCount2; ++i)
+            //    lst_Regist.Items.RemoveAt(0);
+        }
+        catch (ArgumentOutOfRangeException e)
+        {
+            MessageBox.Show("error -1");
+        }
     }
 
     private async void btn_refresh_Click(object sender, RoutedEventArgs e)
@@ -162,6 +176,8 @@ namespace NFCProject {
         await NFCreg.SaveAsync();
 
         MessageBox.Show("Regist finish!");
+
+        RefreshList();
     }
 
 
