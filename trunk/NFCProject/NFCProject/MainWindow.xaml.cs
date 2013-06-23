@@ -17,7 +17,8 @@ using Parse;
 using Microsoft.Win32;
 using System.IO;
 
-namespace NFCProject {
+namespace NFCProject 
+{
   /// <summary>
   /// Interaction logic for MainWindow.xaml
   /// </summary>
@@ -60,27 +61,35 @@ namespace NFCProject {
         lst_Recent.Items.Add("Loading...");
         lst_Regist.Items.Add("Loading...");
 
-        var query = ParseObject.GetQuery("NFC_List").WhereEqualTo("linked_user", "june");
-        IEnumerable<ParseObject> results = await query.FindAsync();
-
-        var query2 = ParseObject.GetQuery("NFC_reg").WhereEqualTo("linked_user", "june");
-        IEnumerable<ParseObject> results2 = await query2.FindAsync();
-
-        ClearLists();
-
-        IEnumerator e1 = results.GetEnumerator();
-        while (e1.MoveNext())
+        try
         {
-            ParseObject obj = (ParseObject)(e1.Current);
-            m_RecentList.Add(obj);
-            lst_Recent.Items.Add(obj.Get<string>("NFC_id"));
+
+            var query = ParseObject.GetQuery("NFC_List").WhereEqualTo("linked_user", "june");
+            IEnumerable<ParseObject> results = await query.FindAsync();
+
+            var query2 = ParseObject.GetQuery("NFC_reg").WhereEqualTo("linked_user", "june");
+            IEnumerable<ParseObject> results2 = await query2.FindAsync();
+
+            ClearLists();
+
+            IEnumerator e1 = results.GetEnumerator();
+            while (e1.MoveNext())
+            {
+                ParseObject obj = (ParseObject)(e1.Current);
+                m_RecentList.Add(obj);
+                lst_Recent.Items.Add(obj.Get<string>("NFC_id"));
+            }
+            IEnumerator e2 = results2.GetEnumerator();
+            while (e2.MoveNext())
+            {
+                ParseObject obj = (ParseObject)(e2.Current);
+                m_RegList.Add(obj);
+                lst_Regist.Items.Add(obj.Get<string>("NFC_id"));
+            }
         }
-        IEnumerator e2 = results2.GetEnumerator();
-        while (e2.MoveNext())
+        catch (Exception e)
         {
-            ParseObject obj = (ParseObject)(e2.Current);
-            m_RegList.Add(obj);
-            lst_Regist.Items.Add(obj.Get<string>("NFC_id"));
+            MessageBox.Show("server connection exception");
         }
     }
 
@@ -94,18 +103,10 @@ namespace NFCProject {
             lst_Recent.Items.Clear();
             lst_Regist.Items.Clear();
 
-
-            //int nCount1 = lst_Recent.Items.Count;
-            //for (int i = 0; i < nCount1; ++i)
-            //    lst_Recent.Items.RemoveAt(0);
-
-            //int nCount2 = lst_Regist.Items.Count;
-            //for (int i = 0; i < nCount2; ++i)
-            //    lst_Regist.Items.RemoveAt(0);
         }
         catch (ArgumentOutOfRangeException e)
         {
-            MessageBox.Show("error -1");
+            MessageBox.Show("refresh exception occured.\nretrying...");
         }
     }
 
