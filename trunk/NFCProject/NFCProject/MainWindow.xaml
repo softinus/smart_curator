@@ -9,11 +9,11 @@
         </Grid.ColumnDefinitions>
         <ListBox x:Name="lst_Recent" HorizontalAlignment="Left" Height="219" Margin="10,38,0,0" VerticalAlignment="Top" Width="135" SelectionChanged="lst_Recent_SelectionChanged"/>
         <ListBox x:Name="lst_Regist" HorizontalAlignment="Left" Margin="10,308,0,0" Width="135" Height="228" VerticalAlignment="Top" SelectionChanged="lst_Regist_SelectionChanged"/>
-        <Button x:Name="btn_refresh" Content="Refresh" HorizontalAlignment="Left" Margin="115,513,0,0" VerticalAlignment="Top" Width="75" Click="btn_refresh_Click" Grid.Column="1" Height="22"/>
+        <Button x:Name="btn_refresh" Content="Refresh" HorizontalAlignment="Left" Margin="35,514,0,0" VerticalAlignment="Top" Width="75" Click="btn_refresh_Click" Grid.Column="1" Height="22"/>
         <Label Content="Recent NFC" Margin="10,8,0,0" FontWeight="Bold" FontSize="16" Height="40" VerticalAlignment="Top" HorizontalAlignment="Left" Width="133"/>
         <Label Content="Registered NFC" Margin="10,273,0,0" FontWeight="Bold" FontSize="16" Height="38" VerticalAlignment="Top" HorizontalAlignment="Left" Width="133"/>
-        <Button x:Name="btn_regist" Content="Regist" HorizontalAlignment="Left" Margin="275,513,0,0" VerticalAlignment="Top" Width="75" Click="btn_regist_Click_1" Grid.Column="1" Height="22"/>
-        <Button x:Name="btn_remove" Content="Remove" HorizontalAlignment="Left" Margin="195,513,0,0" VerticalAlignment="Top" Width="75" Click="btn_remove_Click_1" Grid.Column="1" Height="22"/>
+        <Button x:Name="btn_regist" Content="Regist" HorizontalAlignment="Left" Margin="195,514,0,0" VerticalAlignment="Top" Width="75" Click="btn_regist_Click_1" Grid.Column="1" Height="22"/>
+        <Button x:Name="btn_remove" Content="Remove" HorizontalAlignment="Left" Margin="115,514,0,0" VerticalAlignment="Top" Width="75" Click="btn_remove_Click_1" Grid.Column="1" Height="22"/>
         <TextBox x:Name="txt_id" Height="23" Margin="71,38,0,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="279" Grid.Column="1" IsReadOnly="True"/>
         <Label Content="ID :" Margin="0,38,0,0" VerticalAlignment="Top" Grid.Column="1" Height="30" HorizontalAlignment="Left" Width="50"/>
         <TextBox x:Name="txt_caption1" Height="23" Margin="71,68,0,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="279" Grid.Column="1"/>
@@ -32,5 +32,6 @@
         </Border>
         <Button x:Name="btn_image2" Content="..." Grid.Column="1" HorizontalAlignment="Left" Margin="304,320,0,0" VerticalAlignment="Top" Width="46" Height="23" FontSize="16" FontWeight="Bold" Click="btn_image2_Click"/>
         <TextBox x:Name="txt_date" Height="23" Margin="71,96,0,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="279" Grid.Column="1" IsReadOnly="True"/>
+        <Button x:Name="btn_update" Content="Update" HorizontalAlignment="Left" Margin="275,514,0,0" VerticalAlignment="Top" Width="75" Click="btn_update_Click_1" Grid.Column="1" Height="22"/>
     </Grid>
 </Window>
