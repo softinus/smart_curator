@@ -47,7 +47,8 @@ namespace NFCProject
         //var testObject = new ParseObject("Windows");
         //testObject["WPF"] = "okay";
         //await testObject.SaveAsync();
-
+        btn_regist.IsEnabled = false;
+        btn_update.IsEnabled = false;
 
 
         await RefreshList();
@@ -118,12 +119,16 @@ namespace NFCProject
       // 선택이 바뀌면
     private void lst_Recent_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
+        btn_regist.IsEnabled = true;   // 최근리스트 볼때는 등록
+        btn_update.IsEnabled = false;    // 최근리스트시에 안함
+
         ParseObject obj = m_RecentList[lst_Recent.SelectedIndex];
         
         DateTime? timeCreated = obj.CreatedAt;
         txt_date.Text = timeCreated.Value.ToLocalTime().ToString();
 
         txt_id.Text= obj.Get<string>("NFC_id");
+        txt_caption1.Text = "";
 
     }
 
@@ -134,7 +139,16 @@ namespace NFCProject
        /// <param name="e"></param>
     private void lst_Regist_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
+        btn_regist.IsEnabled = false;   // 등록리스트 볼때는 등록할필요없음
+        btn_update.IsEnabled = true;    // 등록시는 업데이트 버튼으로 업뎃함
 
+        ParseObject obj = m_RegList[lst_Regist.SelectedIndex];
+
+        DateTime? timeCreated = obj.CreatedAt;
+        txt_date.Text = timeCreated.Value.ToLocalTime().ToString();
+
+        txt_id.Text = obj.Get<string>("NFC_id");
+        txt_caption1.Text = obj.Get<string>("Caption");
     }
 
       // 등록
@@ -189,6 +203,10 @@ namespace NFCProject
 
     }
 
+    private void btn_update_Click_1(object sender, RoutedEventArgs e)
+    {
+
+    }
 
     private void SetImage(int nNumber)
     {
@@ -239,6 +257,8 @@ namespace NFCProject
 
         return data;
     }
+
+
 
   }
 }
