@@ -26,6 +26,8 @@ namespace NFCProject
   {
       List<ParseObject> m_RecentList, m_RegList;
       BitmapImage m_bitmap1, m_bitmap2;
+      bool bSelectionRecent = false;
+      int nSelectionIndex = -1;
 
     public MainWindow()
     {
@@ -119,10 +121,20 @@ namespace NFCProject
       // 선택이 바뀌면
     private void lst_Recent_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
+        bSelectionRecent = true;
         btn_regist.IsEnabled = true;   // 최근리스트 볼때는 등록
         btn_update.IsEnabled = false;    // 최근리스트시에 안함
+        btn_remove.IsEnabled = true;    // 선택시 remove 가능
 
-        ParseObject obj = m_RecentList[lst_Recent.SelectedIndex];
+        if(lst_Recent.SelectedIndex!=-1)
+            nSelectionIndex = lst_Recent.SelectedIndex;
+
+        ParseObject obj= null;
+        if (lst_Recent.SelectedIndex != -1 && m_RecentList.Count != 0)
+            obj = m_RecentList[lst_Recent.SelectedIndex];
+
+        if (obj == null)
+            return;
         
         DateTime? timeCreated = obj.CreatedAt;
         txt_date.Text = timeCreated.Value.ToLocalTime().ToString();
@@ -139,10 +151,20 @@ namespace NFCProject
        /// <param name="e"></param>
     private void lst_Regist_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
+        bSelectionRecent = false;
         btn_regist.IsEnabled = false;   // 등록리스트 볼때는 등록할필요없음
         btn_update.IsEnabled = true;    // 등록시는 업데이트 버튼으로 업뎃함
+        btn_remove.IsEnabled = true;    // 선택시 remove 가능
 
-        ParseObject obj = m_RegList[lst_Regist.SelectedIndex];
+        if (lst_Regist.SelectedIndex != -1)
+            nSelectionIndex = lst_Regist.SelectedIndex;
+
+        ParseObject obj = null;
+        if (lst_Regist.SelectedIndex != -1 && m_RegList.Count != 0)
+            obj = m_RegList[lst_Regist.SelectedIndex];
+
+        if (obj == null)
+            return;
 
         DateTime? timeCreated = obj.CreatedAt;
         txt_date.Text = timeCreated.Value.ToLocalTime().ToString();
@@ -198,14 +220,59 @@ namespace NFCProject
 
 
 
-    private void btn_remove_Click_1(object sender, RoutedEventArgs e)
+    private async void btn_remove_Click_1(object sender, RoutedEventArgs e)
     {
+        if (bSelectionRecent)
+        {
+            m_RecentList.RemoveAt(nSelectionIndex);
+            lst_Recent.Items.RemoveAt(nSelectionIndex);
 
+            ParseObject PO = m_RecentList[nSelectionIndex];            
+            await PO.DeleteAsync();
+        }
+        else
+        {
+            m_RegList.RemoveAt(nSelectionIndex);
+            lst_Regist.Items.RemoveAt(nSelectionIndex);
+
+            ParseObject PO = m_RegList[nSelectionIndex];
+            await PO.DeleteAsync();
+        }
     }
 
-    private void btn_update_Click_1(object sender, RoutedEventArgs e)
+    private async void btn_update_Click_1(object sender, RoutedEventArgs e)
     {
+        if (txt_caption1.Text.Equals(""))
+        {
+            MessageBoxResult result = MessageBox.Show("Please input caption.");
+            return;
+        }
+        else if (txt_image1.Text.Equals("") || txt_image2.Text.Equals(""))
+        {
+            MessageBoxResult result = MessageBox.Show("Please select images.");
+            return;
+        }
 
+
+        byte[] data1 = this.ConvertImageToByte(m_bitmap1);
+        ParseFile file1 = new ParseFile("1.png", data1);
+        await file1.SaveAsync();
+
+        byte[] data2 = this.ConvertImageToByte(m_bitmap2);
+        ParseFile file2 = new ParseFile("2.png", data2);
+        await file2.SaveAsync();
+
+        var NFCreg = m_RegList[nSelectionIndex];
+        NFCreg["NFC_id"] = txt_id.Text;
+        NFCreg["linked_user"] = "june";
+        NFCreg["Caption"] = txt_caption1.Text;
+        NFCreg["File1"] = file1;
+        NFCreg["File2"] = file2;
+        await NFCreg.SaveAsync();
+
+        MessageBox.Show("Update finish!");
+
+        RefreshList();
     }
 
     private void SetImage(int nNumber)
