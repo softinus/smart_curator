@@ -30,9 +30,9 @@ public class LoginActivity extends Activity implements OnClickListener
 		Parse.initialize(this, "vh60sQDbtfnIlFxn5HrK6oBj5SN1rqYeqtixIngY", "23gt0kLNMnZJEPYYYxWXQFVZiRXMceKrU1Ge3kVz"); 
 		ParseAnalytics.trackAppOpened(getIntent());
 		
-		ParseObject testObject = new ParseObject("TestObject");
-		testObject.put("foo", "bar");
-		testObject.saveInBackground();	
+//		ParseObject testObject = new ParseObject("TestObject");
+//		testObject.put("foo", "bar");
+//		testObject.saveInBackground();	
 		
 		EDT_ID= (EditText) findViewById(R.id.email);
 		EDT_PW= (EditText) findViewById(R.id.password);
