@@ -1,12 +1,8 @@
-package com.raimsoft.smartcurator5;
-
-import java.util.List;
+package com.raimsoft.smartcurator5.contents;
 
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
@@ -14,15 +10,11 @@ import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.parse.FindCallback;
-import com.parse.GetDataCallback;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
-import com.parse.ParseException;
-import com.parse.ParseFile;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ProgressCallback;
+import com.raimsoft.smartcurator5.R;
+import com.raimsoft.smartcurator5.loader.ParseContentsLoader;
 
 
 public class MainActivity extends Activity 
@@ -40,58 +32,20 @@ public class MainActivity extends Activity
 			return;
 		
 		
+		
 		byte[] tagId = tag.getId();
-		String strNFC_id= toHexString(tagId);	
+		String strNFC_id= ParseContentsLoader.toHexString(tagId);	
 		TXT_tagDesc.setText("TagID: " + strNFC_id );
 	
-		ParseObject testObject = new ParseObject("NFC_List");
-		testObject.put("NFC_id", strNFC_id);
-		testObject.put("linked_user", "june");
-		testObject.saveInBackground();
-		
-		GetImage(IMG_1, TXT_1, strNFC_id, "File1");
-		GetImage(IMG_2, TXT_2, strNFC_id, "File2");
+		ParseObject recentObject = new ParseObject("NFC_List");
+		recentObject.put("NFC_id", strNFC_id);
+		recentObject.put("linked_user", "june");
+		recentObject.saveInBackground();
+				
+		ParseContentsLoader.GetImage(strNFC_id, "File1", 2, IMG_1, TXT_1);
+		ParseContentsLoader.GetImage(strNFC_id, "File2", 2, IMG_2, TXT_2);
 	}
 
-	private void GetImage(final ImageView view_img, final TextView view_txt, final String strNFC_id, final String strFileColumnName)
-	{
-		ParseQuery<ParseObject> query= ParseQuery.getQuery("NFC_reg");
-		query.whereEqualTo("NFC_id", strNFC_id);
-		query.findInBackground(new FindCallback<ParseObject>()
-		{			
-			@Override
-			public void done(List<ParseObject> list, ParseException e)
-			{
-				if(list.size()==1)
-				{
-					ParseFile fileImage1= (ParseFile)list.get(0).get(strFileColumnName);
-					fileImage1.getDataInBackground(new GetDataCallback()
-					{	
-						@Override
-						public void done(byte[] file, ParseException e)
-						{
-							BitmapFactory.Options opts = new BitmapFactory.Options();
-							opts.inDither= false;
-							opts.inSampleSize= 2;
-							Bitmap bitmap= BitmapFactory.decodeByteArray(file, 0, file.length, opts);
-							view_img.setImageBitmap(bitmap);
-						}
-					},
-					new ProgressCallback()
-					{	
-						@Override
-						public void done(Integer nProgress)
-						{
-							if(nProgress==100)
-								view_txt.setText("");
-							else
-								view_txt.setText(Integer.toString(nProgress)+"%");
-						}
-					});
-				}
-			}
-		});
-	}
 	
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -129,18 +83,7 @@ public class MainActivity extends Activity
 	}
 	
 	
-	public static final String CHARS = "0123456789ABCDEF";
-	
-	public static String toHexString(byte[] data)
-	{
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < data.length; ++i)
-		{
-			sb.append(CHARS.charAt((data[i] >> 4) & 0x0F))
-				.append(CHARS.charAt(data[i] & 0x0F));
-		}
-		return sb.toString();
-	}
+
 	
 	@Override
 	protected void onPause()
