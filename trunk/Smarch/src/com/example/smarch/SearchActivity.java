@@ -57,7 +57,7 @@ public class SearchActivity extends Activity implements OnClickListener
 	
 	private void DoSearch()
 	{
-		if( EDT_search.getText().toString() == "" )
+		if( EDT_search.getText().toString().equals("") )
 		{
 			ShowAlertDialog("안내", "검색어를 입력해주세요~", "OK");
 		}
