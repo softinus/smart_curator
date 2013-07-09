@@ -41,7 +41,8 @@ public class SplashActivity extends Activity
         Intent intent = new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 		
-		
+        GetNFCTag();
+        
 		super.onCreate(savedInstanceState);
 	}
 	
@@ -59,8 +60,8 @@ public class SplashActivity extends Activity
 		recentObject.put("linked_user", "june");
 		recentObject.saveInBackground();
 				
-		//ParseContentsLoader.GetImage(strNFC_id, "File_splash", 2, IMG_1, PRG_splash);
-		ParseContentsLoader.GetImage(strNFC_id, "File_Splash", 2, IMG_1, TXT_1);
+		ParseContentsLoader.GetImage(strNFC_id, "File_splash", 2, IMG_1, PRG_splash);
+		//ParseContentsLoader.GetImage(strNFC_id, "File_Splash", 2, IMG_1, TXT_1);
 	}
 	
 
