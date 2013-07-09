@@ -6,6 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#00eeeeee"
     tools:context=".MainActivity" >
 
     <TextView
@@ -18,27 +19,24 @@
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txt_tag"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="119dp"
-        android:src="@android:drawable/alert_light_frame" />
+        android:layout_marginLeft="45dip"
+        android:layout_centerVertical="true" />
 
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="123dp"
-        android:src="@android:drawable/alert_light_frame" />
+        android:layout_toRightOf="@+id/imageView1"
+        android:layout_marginLeft="30dip"
+        android:layout_centerVertical="true" />
 
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/imageView1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
+        android:layout_marginLeft="75dip"
+        android:paddingLeft="75dip"
+        android:layout_centerVertical="true"
         android:textSize="20sp"
         android:text="" />
 
@@ -46,8 +44,9 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/imageView2"
+        android:layout_marginLeft="205dip"
+        android:paddingLeft="205dip"
+        android:layout_centerVertical="true"
         android:textSize="20sp"
         android:text="" />
 

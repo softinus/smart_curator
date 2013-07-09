@@ -42,8 +42,8 @@ public class MainActivity extends Activity
 		recentObject.put("linked_user", "june");
 		recentObject.saveInBackground();
 				
-		ParseContentsLoader.GetImage(strNFC_id, "File1", 2, IMG_1, TXT_1);
-		ParseContentsLoader.GetImage(strNFC_id, "File2", 2, IMG_2, TXT_2);
+		ParseContentsLoader.GetImage(strNFC_id, "File1", 1, IMG_1, TXT_1);
+		ParseContentsLoader.GetImage(strNFC_id, "File2", 1, IMG_2, TXT_2);
 	}
 
 	
