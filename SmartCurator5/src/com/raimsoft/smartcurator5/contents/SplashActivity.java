@@ -4,6 +4,7 @@ import com.parse.Parse;
 import com.parse.ParseAnalytics;
 import com.parse.ParseObject;
 import com.raimsoft.smartcurator5.R;
+import com.raimsoft.smartcurator5.loader.Global;
 import com.raimsoft.smartcurator5.loader.ParseContentsLoader;
 
 import android.app.Activity;
@@ -53,15 +54,15 @@ public class SplashActivity extends Activity
 			return;
 		
 		byte[] tagId = tag.getId();
-		String strNFC_id= ParseContentsLoader.toHexString(tagId);	// 찍힌 NFC ID
+		Global.NFC_id= ParseContentsLoader.toHexString(tagId);	// 찍힌 NFC ID
 	
 		ParseObject recentObject = new ParseObject("NFC_List");
-		recentObject.put("NFC_id", strNFC_id);
+		recentObject.put("NFC_id", Global.NFC_id);
 		recentObject.put("linked_user", "june");
 		recentObject.saveInBackground();
 				
-		ParseContentsLoader.GetImage(strNFC_id, "File_splash", 2, IMG_1, PRG_splash);
-		//ParseContentsLoader.GetImage(strNFC_id, "File_Splash", 2, IMG_1, TXT_1);
+		//ParseContentsLoader.GetImage(Global.NFC_id, "File_splash", 2, IMG_1, PRG_splash);
+		ParseContentsLoader.GetImage(Global.NFC_id, "File_Splash", 2, IMG_1, TXT_1);
 	}
 	
 
