@@ -14,6 +14,7 @@ import com.parse.Parse;
 import com.parse.ParseAnalytics;
 import com.parse.ParseObject;
 import com.raimsoft.smartcurator5.R;
+import com.raimsoft.smartcurator5.loader.Global;
 import com.raimsoft.smartcurator5.loader.ParseContentsLoader;
 
 
@@ -34,16 +35,16 @@ public class MainActivity extends Activity
 		
 		
 		byte[] tagId = tag.getId();
-		String strNFC_id= ParseContentsLoader.toHexString(tagId);	
-		TXT_tagDesc.setText("TagID: " + strNFC_id );
+		Global.NFC_id= ParseContentsLoader.toHexString(tagId);	
+		TXT_tagDesc.setText("TagID: " + Global.NFC_id );
 	
 		ParseObject recentObject = new ParseObject("NFC_List");
-		recentObject.put("NFC_id", strNFC_id);
+		recentObject.put("NFC_id", Global.NFC_id);
 		recentObject.put("linked_user", "june");
 		recentObject.saveInBackground();
 				
-		ParseContentsLoader.GetImage(strNFC_id, "File1", 1, IMG_1, TXT_1);
-		ParseContentsLoader.GetImage(strNFC_id, "File2", 1, IMG_2, TXT_2);
+		ParseContentsLoader.GetImage(Global.NFC_id, "File1", 1, IMG_1, TXT_1);
+		ParseContentsLoader.GetImage(Global.NFC_id, "File2", 1, IMG_2, TXT_2);
 	}
 
 	
