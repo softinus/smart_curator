@@ -82,6 +82,9 @@ namespace NFCProject
                 m_RecentList.Add(obj);
                 lst_Recent.Items.Add(obj.Get<string>("NFC_id"));
             }
+            lblRecentNFC.Content = "Recent (" + lst_Recent.Items.Count + ")";
+
+
             IEnumerator e2 = results2.GetEnumerator();
             while (e2.MoveNext())
             {
@@ -89,6 +92,7 @@ namespace NFCProject
                 m_RegList.Add(obj);
                 lst_Regist.Items.Add(obj.Get<string>("NFC_id"));
             }
+            lblRegNFC.Content = "Registered (" + lst_Regist.Items.Count + ")";
         }
         catch (Exception e)
         {
